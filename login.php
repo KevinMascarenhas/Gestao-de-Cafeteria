@@ -216,10 +216,6 @@ mysqli_close($conn);
             <button type="submit" class="btn-login">Entrar</button>
         </form>
 
-        <div class="info">
-            <strong>Usuário:</strong> admin<br>
-            <strong>Senha:</strong> admin123
-        </div>
     </div>
 </body>
 </html>
