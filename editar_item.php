@@ -28,7 +28,7 @@ mysqli_close($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Item - Cardapio</title>
+    <title>Editar Item - Cardápio</title>
     <style>
         :root {
             --cafe-escuro: #2d1b10;
@@ -221,7 +221,7 @@ mysqli_close($conn);
                 <div class="campo">
                     <label for="categoria">Categoria</label>
                     <select id="categoria" name="categoria" required>
-                        <option value="Cafe" <?php echo $item['categoria'] === 'Cafe' ? 'selected' : ''; ?>>Cafe</option>
+                        <option value="Cafe" <?php echo $item['categoria'] === 'Cafe' ? 'selected' : ''; ?>>Café</option>
                         <option value="Doce" <?php echo $item['categoria'] === 'Doce' ? 'selected' : ''; ?>>Doce</option>
                         <option value="Salgado" <?php echo $item['categoria'] === 'Salgado' ? 'selected' : ''; ?>>Salgado</option>
                         <option value="Bebida Gelada" <?php echo $item['categoria'] === 'Bebida Gelada' ? 'selected' : ''; ?>>Bebida Gelada</option>
@@ -229,12 +229,12 @@ mysqli_close($conn);
                 </div>
 
                 <div class="campo">
-                    <label for="descricao">Descricao</label>
+                    <label for="descricao">Descrição</label>
                     <textarea id="descricao" name="descricao"><?php echo htmlspecialchars($item['descricao'] ?? ''); ?></textarea>
                 </div>
 
                 <div class="campo">
-                    <label for="preco">Preco (R$)</label>
+                    <label for="preco">Preço (R$)</label>
                     <input type="number" id="preco" name="preco" step="0.01" min="0" required
                            value="<?php echo htmlspecialchars($item['preco']); ?>">
                     <small>Use ponto para decimais (ex: 12.50)</small>
@@ -243,8 +243,8 @@ mysqli_close($conn);
                 <div class="campo">
                     <label for="disponivel">Status</label>
                     <select id="disponivel" name="disponivel">
-                        <option value="TRUE" <?php echo $item['disponivel'] == 1 || $item['disponivel'] === true ? 'selected' : ''; ?>>Disponivel</option>
-                        <option value="FALSE" <?php echo $item['disponivel'] == 0 || $item['disponivel'] === false ? 'selected' : ''; ?>>Indisponivel</option>
+                        <option value="TRUE" <?php echo $item['disponivel'] == 1 || $item['disponivel'] === true ? 'selected' : ''; ?>>Disponível</option>
+                        <option value="FALSE" <?php echo $item['disponivel'] == 0 || $item['disponivel'] === false ? 'selected' : ''; ?>>Indisponível</option>
                     </select>
                 </div>
 

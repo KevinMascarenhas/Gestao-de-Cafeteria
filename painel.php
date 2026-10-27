@@ -12,10 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao_cadastrar'])) {
     $preco = $_POST['preco'] ?? '';
 
     if (empty($nome_item) || empty($categoria) || empty($preco)) {
-        $mensagem = "Preencha todos os campos obrigatorios (Nome, Categoria e Preco).";
+        $mensagem = "Preencha todos os campos obrigatórios (Nome, Categoria e Preço).";
         $tipo_mensagem = 'erro';
     } elseif (!is_numeric($preco) || $preco < 0) {
-        $mensagem = "Preco invalido.";
+        $mensagem = "Preço inválido.";
         $tipo_mensagem = 'erro';
     } else {
         $stmt = mysqli_prepare($conn,
@@ -54,7 +54,7 @@ mysqli_close($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel - Cardapio</title>
+    <title>Painel - Cardápio</title>
     <style>
         :root {
             --cafe-escuro: #2d1b10;
@@ -344,9 +344,9 @@ mysqli_close($conn);
 </head>
 <body>
     <header>
-        <h1>Cardapio</h1>
+        <h1>Cardápio</h1>
         <div class="usuario">
-            Ola, <?php echo htmlspecialchars($_SESSION['usuario_nome'] ?? 'Gerente'); ?> |
+            Olá, <?php echo htmlspecialchars($_SESSION['usuario_nome'] ?? 'Gerente'); ?> |
             <a href="logout.php">Sair</a>
         </div>
     </header>
@@ -373,7 +373,7 @@ mysqli_close($conn);
                         <label for="categoria">Categoria</label>
                         <select id="categoria" name="categoria" required>
                             <option value="">Selecione uma categoria</option>
-                            <option value="Cafe">Cafe</option>
+                            <option value="Cafe">Café</option>
                             <option value="Doce">Doce</option>
                             <option value="Salgado">Salgado</option>
                             <option value="Bebida Gelada">Bebida Gelada</option>
@@ -381,12 +381,12 @@ mysqli_close($conn);
                     </div>
 
                     <div class="campo">
-                        <label for="descricao">Descricao</label>
-                        <textarea id="descricao" name="descricao" placeholder="Descricao do item..."></textarea>
+                        <label for="descricao">Descrição</label>
+                        <textarea id="descricao" name="descricao" placeholder="Descrição do item..."></textarea>
                     </div>
 
                     <div class="campo">
-                        <label for="preco">Preco (R$)</label>
+                        <label for="preco">Preço (R$)</label>
                         <input type="number" id="preco" name="preco" step="0.01" min="0" required placeholder="12.50">
                         <small>Use ponto para decimais (ex: 12.50)</small>
                     </div>
@@ -410,10 +410,10 @@ mysqli_close($conn);
                                     <th style="width: 50px;">ID</th>
                                     <th>Nome</th>
                                     <th style="width: 140px;">Categoria</th>
-                                    <th style="width: 220px;">Descricao</th>
-                                    <th style="width: 100px;">Preco</th>
+                                    <th style="width: 220px;">Descrição</th>
+                                    <th style="width: 100px;">Preço</th>
                                     <th style="width: 100px;">Status</th>
-                                    <th style="width: 150px;">Acoes</th>
+                                    <th style="width: 150px;">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -421,19 +421,19 @@ mysqli_close($conn);
                                     <tr>
                                         <td><?php echo htmlspecialchars($item['id']); ?></td>
                                         <td><?php echo htmlspecialchars($item['nome_item']); ?></td>
-                                        <td><?php echo htmlspecialchars($item['categoria']); ?></td>
+                                        <td><?php echo htmlspecialchars($item['categoria'] === 'Cafe' ? 'Café' : $item['categoria']); ?></td>
                                         <td><?php echo htmlspecialchars($item['descricao'] ?? '-'); ?></td>
                                         <td class="preco">R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></td>
                                         <td>
                                             <span class="status <?php echo $item['disponivel'] ? 'disponivel' : 'indisponivel'; ?>">
-                                                <?php echo $item['disponivel'] ? 'Disponivel' : 'Indisponivel'; ?>
+                                                <?php echo $item['disponivel'] ? 'Disponível' : 'Indisponível'; ?>
                                             </span>
                                         </td>
                                         <td class="acoes">
                                             <a href="editar_item.php?id=<?php echo (int)$item['id']; ?>" class="btn btn-editar">Editar</a>
                                             <a href="excluir_item.php?id=<?php echo (int)$item['id']; ?>"
                                                class="btn btn-excluir"
-                                               onclick="return confirm('Tem certeza que deseja excluir este item?')">Excluir</a>
+                                               onclick="return confirm('Tem certeza de que deseja excluir este item?')">Excluir</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -445,7 +445,7 @@ mysqli_close($conn);
         </div>
 
         <footer>
-            Sistema de Gestao do Cardapio - Cafeteria
+            Sistema de Gestão do Cardápio - Cafeteria
         </footer>
     </div>
 </body>

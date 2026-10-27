@@ -12,9 +12,9 @@ $erro = '';
 
 if (isset($_GET['erro'])) {
     if ($_GET['erro'] == 'acesso_negado') {
-        $erro = "Voce precisa fazer login para acessar o painel.";
+        $erro = "Você precisa fazer login para acessar o painel.";
     } elseif ($_GET['erro'] == 'senha_errada') {
-        $erro = "Usuario ou senha incorretos.";
+        $erro = "Usuário ou senha incorretos.";
     }
 }
 
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $senha = $_POST['senha'] ?? '';
 
     if (empty($usuario) || empty($senha)) {
-        $erro = "Preencha usuario e senha.";
+        $erro = "Preencha usuário e senha.";
     } else {
         $stmt = mysqli_prepare($conn, "SELECT id, nome, usuario, senha FROM usuarios WHERE usuario = ? LIMIT 1");
         mysqli_stmt_bind_param($stmt, "s", $usuario);
@@ -43,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: painel.php");
                 exit;
             } else {
-                $erro = "Usuario ou senha incorretos.";
+                $erro = "Usuário ou senha incorretos.";
             }
         } else {
-            $erro = "Usuario ou senha incorretos.";
+            $erro = "Usuário ou senha incorretos.";
         }
 
         mysqli_stmt_close($stmt);
@@ -60,7 +60,7 @@ mysqli_close($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Gestao do Cardapio</title>
+    <title>Login - Gestão do Cardápio</title>
     <style>
         :root {
             --cafe-escuro: #2d1b10;
@@ -195,7 +195,7 @@ mysqli_close($conn);
     <div class="login-card">
         <div class="login-header">
             <h2>Cafeteria</h2>
-            <p>Painel de gestao do cardapio</p>
+            <p>Painel de gestão do cardápio</p>
         </div>
 
         <?php if ($erro): ?>
@@ -204,20 +204,20 @@ mysqli_close($conn);
 
         <form method="POST" action="login.php">
             <div class="campo">
-                <label for="usuario">Usuario</label>
-                <input type="text" id="usuario" name="usuario" required placeholder="admin" autocomplete="username">
+                <label for="usuario">Usuário</label>
+                <input type="text" id="usuario" name="usuario" required placeholder="Digite seu usuário" autocomplete="username">
             </div>
 
             <div class="campo">
                 <label for="senha">Senha</label>
-                <input type="password" id="senha" name="senha" required autocomplete="current-password">
+                <input type="password" id="senha" name="senha" required placeholder="Digite sua senha" autocomplete="current-password">
             </div>
 
             <button type="submit" class="btn-login">Entrar</button>
         </form>
 
         <div class="info">
-            <strong>Usuario:</strong> admin<br>
+            <strong>Usuário:</strong> admin<br>
             <strong>Senha:</strong> admin123
         </div>
     </div>
