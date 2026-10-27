@@ -1,10 +1,7 @@
 <?php
-// editar_item.php - Formulário de edição pré-preenchido (Update - leitura)
-
 require_once 'auth.php';
 require_once 'conexao.php';
 
-// Recebe o ID via URL (?id=X)
 $id = $_GET['id'] ?? '';
 
 if (!filter_var($id, FILTER_VALIDATE_INT)) {
@@ -12,7 +9,6 @@ if (!filter_var($id, FILTER_VALIDATE_INT)) {
     exit;
 }
 
-// Busca o item pelo ID usando Prepared Statement (protege contra SQL Injection)
 $stmt = mysqli_prepare($conn, "SELECT id, nome_item, categoria, descricao, preco, disponivel FROM cardapio WHERE id = ? LIMIT 1");
 mysqli_stmt_bind_param($stmt, "i", $id);
 mysqli_stmt_execute($stmt);
@@ -32,8 +28,19 @@ mysqli_close($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Item - Cardápio</title>
+    <title>Editar Item - Cardapio</title>
     <style>
+        :root {
+            --cafe-escuro: #2d1b10;
+            --cafe-medio: #5d4037;
+            --cafe-claro: #d7ccc8;
+            --creme: #faf6f0;
+            --branco: #ffffff;
+            --texto: #3e2723;
+            --texto-suave: #6f4e37;
+            --borda: #e8dfd4;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -41,10 +48,11 @@ mysqli_close($conn);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-            padding: 30px 20px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--creme);
+            color: var(--texto);
+            padding: 32px 20px;
+            line-height: 1.5;
         }
 
         .container {
@@ -53,10 +61,10 @@ mysqli_close($conn);
         }
 
         header {
-            background: #3e2723;
+            background: var(--cafe-escuro);
             color: #fff;
-            padding: 15px 25px;
-            border-radius: 8px 8px 0 0;
+            padding: 18px 24px;
+            border-radius: 12px 12px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -64,34 +72,38 @@ mysqli_close($conn);
 
         header h1 {
             font-size: 20px;
+            font-weight: 700;
         }
 
         header a {
             color: #fff;
             text-decoration: none;
-            background: #8d6e63;
-            padding: 6px 14px;
-            border-radius: 20px;
+            background: var(--cafe-medio);
+            padding: 8px 16px;
+            border-radius: 6px;
             font-size: 13px;
+            transition: background 0.2s;
         }
 
         header a:hover {
-            background: #6f4e37;
+            background: var(--cafe-escuro);
         }
 
         .card {
-            background: #fff;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            padding: 25px;
+            background: var(--branco);
+            border-radius: 0 0 12px 12px;
+            padding: 28px;
+            border: 1px solid var(--borda);
+            border-top: none;
         }
 
         .card h3 {
-            margin-bottom: 20px;
-            color: #3e2723;
+            margin-bottom: 22px;
+            color: var(--cafe-escuro);
             font-size: 18px;
-            border-bottom: 2px solid #d7ccc8;
-            padding-bottom: 10px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--borda);
+            padding-bottom: 12px;
         }
 
         .campo {
@@ -100,82 +112,87 @@ mysqli_close($conn);
 
         .campo label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
+            margin-bottom: 8px;
             font-size: 14px;
-            color: #5d4037;
+            font-weight: 600;
+            color: var(--texto-suave);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
 
         .campo input,
         .campo select,
         .campo textarea {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #d7ccc8;
-            border-radius: 6px;
+            padding: 11px 14px;
+            border: 1px solid #d9cec0;
+            border-radius: 8px;
             font-size: 14px;
-            transition: border-color 0.3s;
+            background: #fff;
+            transition: border-color 0.2s;
         }
 
         .campo input:focus,
         .campo select:focus,
         .campo textarea:focus {
             outline: none;
-            border-color: #8d6e63;
+            border-color: var(--cafe-medio);
         }
 
         .campo textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 90px;
         }
 
         .campo small {
+            display: block;
+            margin-top: 5px;
             font-size: 12px;
-            color: #8d6e63;
+            color: var(--texto-suave);
         }
 
         .botoes {
             display: flex;
             gap: 12px;
-            margin-top: 25px;
+            margin-top: 30px;
         }
 
         .btn {
             flex: 1;
             padding: 12px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             text-decoration: none;
             text-align: center;
         }
 
         .btn-atualizar {
-            background: #6f4e37;
+            background: var(--cafe-medio);
             color: #fff;
         }
 
         .btn-atualizar:hover {
-            background: #5d4037;
+            background: var(--cafe-escuro);
         }
 
         .btn-cancelar {
-            background: #757575;
-            color: #fff;
+            background: #e8dcd4;
+            color: var(--texto);
         }
 
         .btn-cancelar:hover {
-            background: #616161;
+            background: #d9cec0;
         }
 
         .erro {
-            background: #ffebee;
-            color: #c62828;
-            padding: 12px;
-            border-radius: 6px;
+            background: #fbf0f0;
+            color: #a33333;
+            padding: 12px 16px;
+            border-radius: 8px;
             margin-bottom: 20px;
             font-size: 14px;
             text-align: center;
@@ -185,8 +202,8 @@ mysqli_close($conn);
 <body>
     <div class="container">
         <header>
-            <h1>Editar Item</h1>
-            <a href="painel.php">Voltar ao Painel</a>
+            <h1>Editar item</h1>
+            <a href="painel.php">Voltar ao painel</a>
         </header>
 
         <div class="card">
@@ -196,15 +213,15 @@ mysqli_close($conn);
                 <input type="hidden" name="id" value="<?php echo (int)$item['id']; ?>">
 
                 <div class="campo">
-                    <label for="nome_item">Nome do Item *</label>
-                    <input type="text" id="nome_item" name="nome_item" required 
+                    <label for="nome_item">Nome do item</label>
+                    <input type="text" id="nome_item" name="nome_item" required
                            value="<?php echo htmlspecialchars($item['nome_item']); ?>" maxlength="100">
                 </div>
 
                 <div class="campo">
-                    <label for="categoria">Categoria *</label>
+                    <label for="categoria">Categoria</label>
                     <select id="categoria" name="categoria" required>
-                        <option value="Café" <?php echo $item['categoria'] === 'Café' ? 'selected' : ''; ?>>Café</option>
+                        <option value="Cafe" <?php echo $item['categoria'] === 'Cafe' ? 'selected' : ''; ?>>Cafe</option>
                         <option value="Doce" <?php echo $item['categoria'] === 'Doce' ? 'selected' : ''; ?>>Doce</option>
                         <option value="Salgado" <?php echo $item['categoria'] === 'Salgado' ? 'selected' : ''; ?>>Salgado</option>
                         <option value="Bebida Gelada" <?php echo $item['categoria'] === 'Bebida Gelada' ? 'selected' : ''; ?>>Bebida Gelada</option>
@@ -212,13 +229,13 @@ mysqli_close($conn);
                 </div>
 
                 <div class="campo">
-                    <label for="descricao">Descrição</label>
+                    <label for="descricao">Descricao</label>
                     <textarea id="descricao" name="descricao"><?php echo htmlspecialchars($item['descricao'] ?? ''); ?></textarea>
                 </div>
 
                 <div class="campo">
-                    <label for="preco">Preço (R$) *</label>
-                    <input type="number" id="preco" name="preco" step="0.01" min="0" required 
+                    <label for="preco">Preco (R$)</label>
+                    <input type="number" id="preco" name="preco" step="0.01" min="0" required
                            value="<?php echo htmlspecialchars($item['preco']); ?>">
                     <small>Use ponto para decimais (ex: 12.50)</small>
                 </div>
@@ -226,13 +243,13 @@ mysqli_close($conn);
                 <div class="campo">
                     <label for="disponivel">Status</label>
                     <select id="disponivel" name="disponivel">
-                        <option value="TRUE" <?php echo $item['disponivel'] == 1 || $item['disponivel'] === true ? 'selected' : ''; ?>>Disponível</option>
-                        <option value="FALSE" <?php echo $item['disponivel'] == 0 || $item['disponivel'] === false ? 'selected' : ''; ?>>Indisponível</option>
+                        <option value="TRUE" <?php echo $item['disponivel'] == 1 || $item['disponivel'] === true ? 'selected' : ''; ?>>Disponivel</option>
+                        <option value="FALSE" <?php echo $item['disponivel'] == 0 || $item['disponivel'] === false ? 'selected' : ''; ?>>Indisponivel</option>
                     </select>
                 </div>
 
                 <div class="botoes">
-                    <button type="submit" class="btn btn-atualizar">Atualizar Item</button>
+                    <button type="submit" class="btn btn-atualizar">Atualizar item</button>
                     <a href="painel.php" class="btn btn-cancelar">Cancelar</a>
                 </div>
             </form>
