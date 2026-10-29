@@ -35,5 +35,3 @@ CRUD completo em PHP procedural com MySQL para gerenciar itens do cardápio.
 - Listar itens em tabela
 - Editar item (sem duplicar)
 - Excluir item
-
-Todas as consultas usam Prepared Statements (protecao contra SQL Injection).
